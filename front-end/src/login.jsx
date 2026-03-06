@@ -67,10 +67,10 @@ export default function Login() {
     return (
         <div>
             <div className="login">
-                <div className="logo">
-                    <img src="/images/logo-1.png" alt="" />
-                </div>
                 <div className="forms">
+                    <div className="logo">
+                        <img src="/images/logo-1.png" alt="" />
+                    </div>
                     <h4>Connexion</h4>
                     <form action="" onSubmit={submit}>
                         <div className="input">
