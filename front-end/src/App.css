@@ -3,11 +3,11 @@ body {
     margin: 0;
     overflow: hidden;
 }
-.logo{
+.login .logo{
     display: flex;
     justify-content: center;
 }
-.logo img{
+.login .logo img{
     width: 60%;
     height: auto;
 }
