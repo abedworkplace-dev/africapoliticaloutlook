@@ -64,7 +64,6 @@ export default function InscriptionNonFinalisee() {
                 <div><h4>Montant :</h4><span>{overlayItem.amount_value + " " + overlayItem.currency}</span></div>
                 <div><h4>Pass :</h4><span>{overlayItem.passlabel}</span></div>
                 <div><h4>Days :</h4><span>{overlayItem.days}</span></div>
-                <div><h4>Email sent :</h4><span>{overlayItem.email_sent}</span></div>
                 <div><h4>Date :</h4><span>
                   {new Date(overlayItem.created_at).toLocaleDateString("fr-FR", {
                     day: "2-digit",

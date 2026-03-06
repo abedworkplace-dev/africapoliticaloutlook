@@ -7,19 +7,20 @@ import { useEffect } from 'react';
 import axios from "axios"
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { FaUsers } from "react-icons/fa";
 
 
 export default function Dashboard() {
   const navigation = useNavigate()
-  const [inscription,setInscription]=useState([])
-  const [inscriptionToday,setInscriptionToday]=useState([])
+  const [inscription, setInscription] = useState([])
+  const [inscriptionToday, setInscriptionToday] = useState([])
 
   useEffect(() => {
     axios.get("https://africapoliticaloutlook.vercel.app/inscription")
       .then((res) => {
         const today = new Date();
         setInscription(res.data)
-        setInscriptionToday(res.data.filter((item)=> new Date((item.created_at).replace(" ", "T")).getTime()===today.getTime()))
+        setInscriptionToday(res.data.filter((item) => new Date((item.created_at).replace(" ", "T")).getTime() === today.getTime()))
       }).catch((err) => {
         console.log(err)
       })
@@ -36,18 +37,18 @@ export default function Dashboard() {
         <div className="content1">
           <div class="horaire">Aujourd'hui</div>
           <div className="cards">
-            <div className="card reussi" onClick={()=>navigation("/sidebar/inscription-reussie")}>
+            <div className="card reussi" onClick={() => navigation("/sidebar/inscription-reussie")}>
               <div className="nbr">
-                <span> {(inscriptionToday.filter((item)=>item.status=="paid")).length} </span>
+                <span> {(inscriptionToday.filter((item) => item.status == "paid")).length} </span>
                 <h5>Inscriptions réussie</h5>
               </div>
               <div className="icon">
                 <LuUserCheck className='i' />
               </div>
             </div>
-            <div className="card n-finalise" onClick={()=>navigation("/sidebar/inscription-non-finalisee")}>
+            <div className="card n-finalise" onClick={() => navigation("/sidebar/inscription-non-finalisee")}>
               <div className="nbr">
-                <span>{(inscriptionToday.filter((item)=>item.status==="pending" || item.status==="expired")).length}</span>
+                <span>{(inscriptionToday.filter((item) => item.status === "pending" || item.status === "expired")).length}</span>
                 <h5>Inscriptions incomplètes</h5>
               </div>
               <div className="icon">
@@ -56,11 +57,20 @@ export default function Dashboard() {
             </div>
             <div className="card promo">
               <div className="nbr">
-                 <span>{(inscriptionToday.filter((item)=>item.promo==="1")).length}</span>
-                <h5>Inscriptions promo</h5>
+                <span>{(inscriptionToday.filter((item) => item.promo === "1")).length}</span>
+                <h5>Inscriptions via code</h5>
               </div>
               <div className="icon">
                 <FaTicketAlt className='i' />
+              </div>
+            </div>
+            <div className="card total">
+              <div className="nbr">
+                <span>{(inscriptionToday.filter((item) => item.status == "paid")).length+(inscriptionToday.filter((item) => item.status === "pending" || item.status === "expired")).length+(inscriptionToday.filter((item) => item.promo === "1")).length}</span>
+                <h5>Total des inscriptions</h5>
+              </div>
+              <div className="icon">
+                <FaUsers className='i' />
               </div>
             </div>
           </div>
@@ -68,18 +78,18 @@ export default function Dashboard() {
         <div className="content1">
           <div class="horaire">Total</div>
           <div className="cards">
-            <div className="card reussi" onClick={()=>navigation("/sidebar/inscription-reussie")}>
+            <div className="card reussi" onClick={() => navigation("/sidebar/inscription-reussie")}>
               <div className="nbr">
-                <span> {(inscription.filter((item)=>item.status=="paid")).length} </span>
+                <span> {(inscription.filter((item) => item.status == "paid")).length} </span>
                 <h5>Inscriptions réussies</h5>
               </div>
               <div className="icon">
                 <LuUserCheck className='i' />
               </div>
             </div>
-            <div className="card n-finalise" onClick={()=>navigation("/sidebar/inscription-non-finalisee")} >
+            <div className="card n-finalise" onClick={() => navigation("/sidebar/inscription-non-finalisee")} >
               <div className="nbr">
-                <span>{(inscription.filter((item)=>item.status==="pending" || item.status==="expired")).length}</span>
+                <span>{(inscription.filter((item) => item.status === "pending" || item.status === "expired")).length}</span>
                 <h5>Inscriptions incomplètes</h5>
               </div>
               <div className="icon">
@@ -88,11 +98,20 @@ export default function Dashboard() {
             </div>
             <div className="card promo">
               <div className="nbr">
-                <span>{(inscriptionToday.filter((item)=>item.promo==="1")).length}</span>
-                <h5>Inscriptions promo</h5>
+                <span>{(inscription.filter((item) => item.promo === "1")).length}</span>
+                <h5>Inscriptions via code</h5>
               </div>
               <div className="icon">
                 <FaTicketAlt className='i' />
+              </div>
+            </div>
+            <div className="card total">
+              <div className="nbr">
+                <span>{(inscription.filter((item) => item.status == "paid")).length+(inscription.filter((item) => item.status === "pending" || item.status === "expired")).length+(inscription.filter((item) => item.promo === "1")).length}</span>
+                <h5>Total des inscriptions</h5>
+              </div>
+              <div className="icon">
+                <FaUsers className='i' />
               </div>
             </div>
           </div>

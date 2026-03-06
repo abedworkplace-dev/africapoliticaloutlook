@@ -333,8 +333,8 @@ form button {
 }
 
 .cards .card {
-    width: 30%;
-    min-height: 180px;
+    width: 24%;
+    min-height: 150px;
     background-color: white;
     box-shadow: 0 8px 25px rgba(0, 0, 0, 0.08);
     box-sizing: border-box;
@@ -404,6 +404,14 @@ form button {
 
 .cards .card.promo .icon .i {
     color: #8b5cf6;
+}
+
+.cards .card.total .icon {
+    background-color: rgba(59, 130, 246, 0.2);
+}
+
+.cards .card.total .icon .i {
+    color: #3b82f6;
 }
 
 table {
@@ -781,15 +789,19 @@ tbody tr:hover {
     background-color: #f8d7da;
     color: #dc3545;
 }
+
 .promo .user-info {
     height: 130px;
 }
-.promo .overlay-card{
-  min-height: 450px;
+
+.promo .overlay-card {
+    min-height: 450px;
 }
+
 .promo form {
     width: 45%;
 }
+
 .promo .content {
     gap: 20px;
 }

@@ -64,7 +64,7 @@ app.get("/", (req, res) => {
 });
 
 app.get("/inscription", (req, res) => {
-    const sql = "SELECT * FROM apo_2026";
+    const sql = "SELECT * FROM apo_2026 ORDER BY created_at DESC";
     db.query(sql)
         .then(([rows]) => {
             res.send(rows);
