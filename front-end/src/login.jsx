@@ -69,7 +69,7 @@ export default function Login() {
             <div className="login">
                 <div className="forms">
                     <div className="logo">
-                        <img src="/images/logo-1.png" alt="" />
+                        <img src="/images/logo.png" alt="" />
                     </div>
                     <h4>Connexion</h4>
                     <form action="" onSubmit={submit}>
