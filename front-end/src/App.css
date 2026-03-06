@@ -3,14 +3,17 @@ body {
     margin: 0;
     overflow: hidden;
 }
-.login .logo{
+
+.login .logo {
     display: flex;
     justify-content: center;
 }
-.login .logo img{
+
+.login .logo img {
     width: 60%;
     height: auto;
 }
+
 .login {
     width: 100%;
     height: 100vh;
@@ -63,6 +66,17 @@ body {
     display: flex;
     align-items: stretch;
     justify-content: center;
+}
+
+.password .input,.promo .input {
+    display: flex;
+    align-items: stretch;
+    justify-content: initial;
+}
+
+.password form button,.promo form button {
+    min-width: 200px;
+    margin: initial;
 }
 
 .input input {
