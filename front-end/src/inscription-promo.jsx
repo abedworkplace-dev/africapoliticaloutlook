@@ -10,7 +10,7 @@ import { SlUserFemale } from "react-icons/sl";
 import { SlUser } from "react-icons/sl";
 
 
-export default function InscriptionReussie() {
+export default function InscriptionPromo() {
   const [inscription, setInscription] = useState([])
   const [overlay, setOverlay] = useState(false)
   const [overlayItem, setOverlayItem] = useState({})
@@ -18,7 +18,7 @@ export default function InscriptionReussie() {
   useEffect(() => {
     axios.get("https://africapoliticaloutlook.vercel.app/inscription")
       .then((res) => {
-        setInscription(res.data.filter((item) => item.status == "paid"))
+        setInscription(res.data.filter((item) => item.promo === "1" && item.status == "paid"))
       }).catch((err) => {
         console.log(err)
       })
@@ -82,7 +82,7 @@ export default function InscriptionReussie() {
         )
       }
       <div className="header">
-        <h4>Inscriptions Réussies</h4>
+        <h4>Inscriptions via code promo</h4>
       </div>
       <div className="content">
         <table>
@@ -97,18 +97,25 @@ export default function InscriptionReussie() {
             </tr>
           </thead>
           <tbody>
-            {inscription.map((item, key) => {
-              return (
-                <tr key={key} onClick={() => { setOverlay(true); setOverlayItem(inscription.filter((i) => i.id === item.id)[0]) }}>
-                  <td>{key+1}</td>
-                  <td className='nom'> <div className="icon">{item.sexe === "Homme" ? <SlUser className='i' /> : <SlUserFemale className='i' />}</div><span>{item.nom + " " + item.prenoms}</span></td>
-                  <td className='pays'>{item.pays}</td>
-                  <td>{item.email}</td>
-                  <td>{item.institution}</td>
-                  <td className='status'><span className={item.status == "paid" ? "paid" : item.status == "expired" ? "expired" : item.status == "pending" ? "pending" : ""}>{item.status}</span></td>
-                </tr>
-              )
-            })}
+            {inscription.length > 0 ? (
+              inscription.map((item, key) => {
+                return (
+                  <tr key={key} onClick={() => { setOverlay(true); setOverlayItem(inscription.filter((i) => i.id === item.id)[0]) }}>
+                    <td>{key + 1}</td>
+                    <td className='nom'> <div className="icon">{item.sexe === "Homme" ? <SlUser className='i' /> : <SlUserFemale className='i' />}</div><span>{item.nom + " " + item.prenoms}</span></td>
+                    <td className='pays'>{item.pays}</td>
+                    <td>{item.email}</td>
+                    <td>{item.institution}</td>
+                    <td className='status'><span className={item.status == "paid" ? "paid" : item.status == "expired" ? "expired" : item.status == "pending" ? "pending" : ""}>{item.status}</span></td>
+                  </tr>
+                )
+              })
+            ) : (
+              <tr className="empty">
+                <td colSpan="6"> Aucune inscription via code promo n'a été faite</td>
+              </tr>
+
+            )}
           </tbody>
         </table>
       </div>

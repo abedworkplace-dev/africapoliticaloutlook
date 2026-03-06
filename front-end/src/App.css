@@ -297,6 +297,30 @@ form button {
 
 .header {
     padding-left: 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.header button {
+    width: fit-content;
+    min-width: 150px;
+    color: white;
+    font-family: "Poppins", sans-serif;
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 20px;
+    text-transform: inherit;
+    transition: all 0.4s;
+    position: relative;
+    z-index: 1;
+    background: linear-gradient(to right, #f78a60 0%, #CE3C13 100%);
+    display: inline-block;
+    border-radius: 3px;
+    padding: 15px 0px;
+    border: none;
+    cursor: pointer;
 }
 
 .header h4 {
@@ -804,4 +828,23 @@ tbody tr:hover {
 
 .promo .content {
     gap: 20px;
+}
+
+.empty {
+    border: none;
+}
+
+.empty:hover {
+    box-shadow: none;
+}
+
+.empty td {
+    width: 100% !important;
+    font-size: 16px;
+    line-height: 26px;
+    color: #000000;
+    font-family: "Bricolage Grotesque", sans-serif;
+    font-style: normal;
+    font-weight: 400;
+    text-align: center;
 }

@@ -10,6 +10,9 @@ import CodePromo from './code-promo';
 import Newsletter from './newsletter';
 import Password from './password';
 import Logout from './logout';
+import InscriptionPromo from './inscription-promo';
+import AjoutCodePromo from './ajouter-code-promo';
+import Presse from './presse';
 import './App.css'
 
 function App() {
@@ -23,7 +26,10 @@ function App() {
         <Route path="inscription" element={<Inscription />} />
         <Route path="inscription-reussie" element={<InscriptionReussie />} />
         <Route path="inscription-non-finalisee" element={<InscriptionNonFinalisee />} />
+        <Route path="inscription-promo" element={<InscriptionPromo/>} />
         <Route path="code-promo" element={<CodePromo />} />
+        <Route path="ajout-code-promo" element={<AjoutCodePromo />} />
+        <Route path="presse" element={<Presse />} />
         <Route path="newsletter" element={<Newsletter />} />
         <Route path="password" element={<Password />} />
         <Route path="logout" element={<Logout />} />

@@ -20,7 +20,18 @@ export default function Dashboard() {
       .then((res) => {
         const today = new Date();
         setInscription(res.data)
-        setInscriptionToday(res.data.filter((item) => new Date((item.created_at).replace(" ", "T")).getTime() === today.getTime()))
+
+        const result = res.data.filter(item => {
+          const itemDate = new Date(item.created_at.replace(" ", "T"));
+
+          return (
+            itemDate.getFullYear() === today.getFullYear() &&
+            itemDate.getMonth() === today.getMonth() &&
+            itemDate.getDate() === today.getDate()
+          );
+        });
+
+        setInscriptionToday(result);
       }).catch((err) => {
         console.log(err)
       })
@@ -48,7 +59,38 @@ export default function Dashboard() {
             </div>
             <div className="card n-finalise" onClick={() => navigation("/sidebar/inscription-non-finalisee")}>
               <div className="nbr">
-                <span>{(inscriptionToday.filter((item) => item.status === "pending" || item.status === "expired")).length}</span>
+                <span>{
+                  (() => {
+                    const allowedStatuses = ["pending", "canceled", "expired"];
+                    const excludedStatus = "paid";
+
+                    // Regrouper tous les statuts par email
+                    const emailStatuses = {};
+                    inscriptionToday.forEach(item => {
+                      if (!emailStatuses[item.email]) {
+                        emailStatuses[item.email] = new Set();
+                      }
+                      emailStatuses[item.email].add(item.status);
+                    });
+
+                    // Garder uniquement ceux qui :
+                    // 1️⃣ ont au moins un statut autorisé
+                    // 2️⃣ n’ont pas de statut 'paid'
+                    // 3️⃣ ont strictement un seul statut parmi allowedStatuses
+                    const result = Object.entries(emailStatuses)
+                      .filter(([email, statuses]) => {
+                        const statusesArray = [...statuses];
+                        return (
+                          !statusesArray.includes(excludedStatus) &&
+                          statusesArray.every(status => allowedStatuses.includes(status)) &&
+                          statusesArray.length === 1
+                        );
+                      })
+                      .map(([email]) => email);
+
+                    return result.length;
+                  })()
+                }</span>
                 <h5>Inscriptions incomplètes</h5>
               </div>
               <div className="icon">
@@ -57,7 +99,7 @@ export default function Dashboard() {
             </div>
             <div className="card promo">
               <div className="nbr">
-                <span>{(inscriptionToday.filter((item) => item.promo === "1")).length}</span>
+                <span>{(inscriptionToday.filter((item) => item.promo === "1" && item.status == "paid")).length}</span>
                 <h5>Inscriptions via code</h5>
               </div>
               <div className="icon">
@@ -66,7 +108,38 @@ export default function Dashboard() {
             </div>
             <div className="card total">
               <div className="nbr">
-                <span>{(inscriptionToday.filter((item) => item.status == "paid")).length+(inscriptionToday.filter((item) => item.status === "pending" || item.status === "expired")).length+(inscriptionToday.filter((item) => item.promo === "1")).length}</span>
+                <span>{(inscriptionToday.filter((item) => item.status == "paid")).length +
+                  (() => {
+                    const allowedStatuses = ["pending", "canceled", "expired"];
+                    const excludedStatus = "paid";
+
+                    // Regrouper tous les statuts par email
+                    const emailStatuses = {};
+                    inscriptionToday.forEach(item => {
+                      if (!emailStatuses[item.email]) {
+                        emailStatuses[item.email] = new Set();
+                      }
+                      emailStatuses[item.email].add(item.status);
+                    });
+
+                    // Garder uniquement ceux qui :
+                    // 1️⃣ ont au moins un statut autorisé
+                    // 2️⃣ n’ont pas de statut 'paid'
+                    // 3️⃣ ont strictement un seul statut parmi allowedStatuses
+                    const result = Object.entries(emailStatuses)
+                      .filter(([email, statuses]) => {
+                        const statusesArray = [...statuses];
+                        return (
+                          !statusesArray.includes(excludedStatus) &&
+                          statusesArray.every(status => allowedStatuses.includes(status)) &&
+                          statusesArray.length === 1
+                        );
+                      })
+                      .map(([email]) => email);
+
+                    return result.length;
+                  })()
+                  + (inscriptionToday.filter((item) => item.promo === "1" && item.status == "paid")).length}</span>
                 <h5>Total des inscriptions</h5>
               </div>
               <div className="icon">
@@ -89,7 +162,38 @@ export default function Dashboard() {
             </div>
             <div className="card n-finalise" onClick={() => navigation("/sidebar/inscription-non-finalisee")} >
               <div className="nbr">
-                <span>{(inscription.filter((item) => item.status === "pending" || item.status === "expired")).length}</span>
+                <span>{
+                  (() => {
+                    const allowedStatuses = ["pending", "canceled", "expired"];
+                    const excludedStatus = "paid";
+
+                    // Regrouper tous les statuts par email
+                    const emailStatuses = {};
+                    inscription.forEach(item => {
+                      if (!emailStatuses[item.email]) {
+                        emailStatuses[item.email] = new Set();
+                      }
+                      emailStatuses[item.email].add(item.status);
+                    });
+
+                    // Garder uniquement ceux qui :
+                    // 1️⃣ ont au moins un statut autorisé
+                    // 2️⃣ n’ont pas de statut 'paid'
+                    // 3️⃣ ont strictement un seul statut parmi allowedStatuses
+                    const result = Object.entries(emailStatuses)
+                      .filter(([email, statuses]) => {
+                        const statusesArray = [...statuses];
+                        return (
+                          !statusesArray.includes(excludedStatus) &&
+                          statusesArray.every(status => allowedStatuses.includes(status)) &&
+                          statusesArray.length === 1
+                        );
+                      })
+                      .map(([email]) => email);
+
+                    return result.length;
+                  })()
+                }</span>
                 <h5>Inscriptions incomplètes</h5>
               </div>
               <div className="icon">
@@ -98,7 +202,7 @@ export default function Dashboard() {
             </div>
             <div className="card promo">
               <div className="nbr">
-                <span>{(inscription.filter((item) => item.promo === "1")).length}</span>
+                <span>{(inscription.filter((item) => item.promo === "1" && item.status == "paid")).length}</span>
                 <h5>Inscriptions via code</h5>
               </div>
               <div className="icon">
@@ -107,7 +211,38 @@ export default function Dashboard() {
             </div>
             <div className="card total">
               <div className="nbr">
-                <span>{(inscription.filter((item) => item.status == "paid")).length+(inscription.filter((item) => item.status === "pending" || item.status === "expired")).length+(inscription.filter((item) => item.promo === "1")).length}</span>
+                <span>{(inscription.filter((item) => item.status == "paid")).length +
+                  (() => {
+                    const allowedStatuses = ["pending", "canceled", "expired"];
+                    const excludedStatus = "paid";
+
+                    // Regrouper tous les statuts par email
+                    const emailStatuses = {};
+                    inscription.forEach(item => {
+                      if (!emailStatuses[item.email]) {
+                        emailStatuses[item.email] = new Set();
+                      }
+                      emailStatuses[item.email].add(item.status);
+                    });
+
+                    // Garder uniquement ceux qui :
+                    // 1️⃣ ont au moins un statut autorisé
+                    // 2️⃣ n’ont pas de statut 'paid'
+                    // 3️⃣ ont strictement un seul statut parmi allowedStatuses
+                    const result = Object.entries(emailStatuses)
+                      .filter(([email, statuses]) => {
+                        const statusesArray = [...statuses];
+                        return (
+                          !statusesArray.includes(excludedStatus) &&
+                          statusesArray.every(status => allowedStatuses.includes(status)) &&
+                          statusesArray.length === 1
+                        );
+                      })
+                      .map(([email]) => email);
+
+                    return result.length;
+                  })()
+                  + (inscription.filter((item) => item.promo === "1" && item.status == "paid")).length}</span>
                 <h5>Total des inscriptions</h5>
               </div>
               <div className="icon">

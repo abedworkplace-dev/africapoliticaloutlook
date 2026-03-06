@@ -14,6 +14,7 @@ import { CiSearch } from "react-icons/ci";
 import { IoMdNotificationsOutline } from "react-icons/io";
 import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { FaIdBadge } from "react-icons/fa";
 
 export default function Sidebar() {
     const navigation = useNavigate()
@@ -47,10 +48,18 @@ export default function Sidebar() {
                         <div className={open1 ? "submenu active" : "submenu"}>
                             <NavLink to="/sidebar/inscription-non-finalisee" className={({ isActive }) => isActive ? "link active" : "link"}><span>Non finalisée</span></NavLink>
                         </div>
+                        <div className={open1 ? "submenu active" : "submenu"}>
+                            <NavLink to="/sidebar/inscription-promo" className={({ isActive }) => isActive ? "link active" : "link"}><span>Via code promo</span></NavLink>
+                        </div>
                     </li>
                     <li>
                         <NavLink to="/sidebar/code-promo" className={({ isActive }) => isActive ? "link active" : "link"}>
                             <span><MdLocalOffer className='i' />Codes promos</span>
+                        </NavLink>
+                    </li>
+                    <li>
+                        <NavLink to="/sidebar/presse" className={({ isActive }) => isActive ? "link active" : "link"}>
+                            <span><FaIdBadge className='i' />Accreditation presse</span>
                         </NavLink>
                     </li>
                     <li>
@@ -81,7 +90,7 @@ export default function Sidebar() {
                     </div>
                     <div className="header-right">
                         <div className='notif'><IoMdNotificationsOutline className='i' /><span>01</span></div>
-                       {JSON.parse(localStorage.getItem("admin#token")).role=="super-admin"?<img src="/images/djogan.jpeg" alt="" />:<img src="/images/apo.jpeg" alt="" />}
+                        {JSON.parse(localStorage.getItem("admin#token")).role == "super-admin" ? <img src="/images/djogan.jpeg" alt="" /> : <img src="/images/apo.jpeg" alt="" />}
                     </div>
                 </div>
                 <div className='outlet'>

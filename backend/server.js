@@ -75,6 +75,18 @@ app.get("/inscription", (req, res) => {
         });
 });
 
+app.get("/presse", (req, res) => {
+    const sql = "SELECT * FROM accreditation_presse";
+    db.query(sql)
+        .then(([rows]) => {
+            res.send(rows);
+        })
+        .catch(err => {
+            console.error("Erreur SQL :", err);
+            res.status(500).send("Erreur serveur");
+        });
+});
+
 app.get("/newsletter", (req, res) => {
     const sql = "SELECT * FROM newsletter";
     db.query(sql)
