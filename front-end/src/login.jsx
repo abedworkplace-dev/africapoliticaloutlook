@@ -22,12 +22,12 @@ export default function Login() {
 
     function submit(e) {
         e.preventDefault()
-        axios.get("http://localhost:3006/")
+        axios.get("https://africapoliticaloutlook.vercel.app/")
             .then((res) => {
                 const result = res.data.filter((user) => user.email === email && user.password === password)
                 if (result.length > 0) {
                     if (result[0].role === "super-admin") {
-                        axios.get("http://localhost:3006/token")
+                        axios.get("https://africapoliticaloutlook.vercel.app/token")
                             .then((res) => {
                                 localStorage.setItem("admin#token", JSON.stringify({ token: res.data, role: "super-admin" }));
                                 navigation("/sidebar/dashboard")
@@ -35,7 +35,7 @@ export default function Login() {
                                 console.log(err)
                             })
                     } else {
-                        axios.get("http://localhost:3006/token")
+                        axios.get("https://africapoliticaloutlook.vercel.app/token")
                             .then((res) => {
                                 localStorage.setItem("admin#token", JSON.stringify({ token: res.data, role: "admin" }));
                                 navigation("/sidebar/dashboard")

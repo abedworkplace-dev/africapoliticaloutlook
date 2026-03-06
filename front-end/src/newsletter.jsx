@@ -16,7 +16,7 @@ export default function Newsletter() {
   const [overlayItem, setOverlayItem] = useState({})
 
   useEffect(() => {
-    axios.get("http://localhost:3006/newsletter")
+    axios.get("https://africapoliticaloutlook.vercel.app/newsletter")
       .then((res) => {
         setnewsletter(res.data)
       }).catch((err) => {

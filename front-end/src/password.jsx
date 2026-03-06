@@ -25,7 +25,7 @@ export default function Password() {
   const [showConfirm, setShowConfirm] = useState(false);
 
   useEffect(() => {
-    axios.get("http://localhost:3006/inscription")
+    axios.get("https://africapoliticaloutlook.vercel.app/inscription")
       .then((res) => {
         const today = new Date();
         setInscription(res.data)
@@ -38,12 +38,12 @@ export default function Password() {
 
   function submit(e) {
     e.preventDefault()
-    axios.get("http://localhost:3006/")
+    axios.get("https://africapoliticaloutlook.vercel.app/")
       .then((ress) => {
         const result = ress.data.filter((user) => user.role == JSON.parse(localStorage.getItem("admin#token")).role && user.password === oldPassword)
         if (result.length > 0) {
           if (newPassword === confirmPassword) {
-            axios.post("http://localhost:3006/newPassword", { mdp: newPassword, role: JSON.parse(localStorage.getItem("admin#token")).role })
+            axios.post("https://africapoliticaloutlook.vercel.app/newPassword", { mdp: newPassword, role: JSON.parse(localStorage.getItem("admin#token")).role })
               .then((res) => {
                 if (res.data === "Mise à jour réussie !") {
                   Swal.fire({

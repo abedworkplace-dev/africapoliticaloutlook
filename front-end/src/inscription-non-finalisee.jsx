@@ -16,7 +16,7 @@ export default function InscriptionNonFinalisee() {
   const [overlayItem, setOverlayItem] = useState({})
 
   useEffect(() => {
-    axios.get("http://localhost:3006/inscription")
+    axios.get("https://africapoliticaloutlook.vercel.app/inscription")
       .then((res) => {
         setInscription(res.data.filter((item) =>item.status=="pending" || item.status=="expired" ))
       }).catch((err) => {

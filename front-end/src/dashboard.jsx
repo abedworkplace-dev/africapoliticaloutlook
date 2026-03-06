@@ -15,7 +15,7 @@ export default function Dashboard() {
   const [inscriptionToday,setInscriptionToday]=useState([])
 
   useEffect(() => {
-    axios.get("http://localhost:3006/inscription")
+    axios.get("https://africapoliticaloutlook.vercel.app/inscription")
       .then((res) => {
         const today = new Date();
         setInscription(res.data)

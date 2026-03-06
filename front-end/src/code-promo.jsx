@@ -22,7 +22,7 @@ export default function CodePromo() {
   const [value, setValue] = useState("")
 
   useEffect(() => {
-    axios.get("http://localhost:3006/promo")
+    axios.get("https://africapoliticaloutlook.vercel.app/promo")
       .then((res) => {
         setCodes(res.data)
       }).catch((err) => {
@@ -33,7 +33,7 @@ export default function CodePromo() {
 
 
   function activer(code) {
-    axios.post("http://localhost:3006/activ-promo", { id: code })
+    axios.post("https://africapoliticaloutlook.vercel.app/activ-promo", { id: code })
       .then((res) => {
         if (res.data === "Mise à jour réussie !") {
           Swal.fire({
@@ -71,7 +71,7 @@ export default function CodePromo() {
 
 
   function desactiver(code) {
-    axios.post("http://localhost:3006/desac-promo", { id: code })
+    axios.post("https://africapoliticaloutlook.vercel.app/desac-promo", { id: code })
       .then((res) => {
         if (res.data === "Mise à jour réussie !") {
           Swal.fire({
@@ -112,7 +112,7 @@ export default function CodePromo() {
     console.log(code, label, value)
 
 
-    axios.post("http://localhost:3006/insert-promo", { code: code, label: label, value: value })
+    axios.post("https://africapoliticaloutlook.vercel.app/insert-promo", { code: code, label: label, value: value })
       .then((res) => {
         if (res.data === "existant") {
           Swal.fire({
