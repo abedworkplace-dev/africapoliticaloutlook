@@ -45,7 +45,7 @@ export default function CodePromo() {
             },
             buttonsStyling: false
           }).then(() => {
-            window.location.href = "/sidebar/code-promo";
+            window.location.reload();
           });;
         } else {
           Swal.fire({
@@ -83,7 +83,7 @@ export default function CodePromo() {
             },
             buttonsStyling: false
           }).then(() => {
-            window.location.href = "/sidebar/code-promo";
+            window.location.reload();
           });
         } else {
           Swal.fire({
