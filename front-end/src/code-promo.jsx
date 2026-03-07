@@ -45,7 +45,7 @@ export default function CodePromo() {
             },
             buttonsStyling: false
           }).then(() => {
-            navigate(0);
+            window.location.href = "/";
           });;
         } else {
           Swal.fire({
@@ -83,7 +83,7 @@ export default function CodePromo() {
             },
             buttonsStyling: false
           }).then(() => {
-            navigate(0); // refresh propre
+            window.location.href = "/";
           });
         } else {
           Swal.fire({
