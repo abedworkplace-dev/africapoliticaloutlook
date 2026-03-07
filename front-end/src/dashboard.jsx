@@ -64,29 +64,23 @@ export default function Dashboard() {
                     const allowedStatuses = ["pending", "canceled", "expired"];
                     const excludedStatus = "paid";
 
-                    // Regrouper tous les statuts par email
-                    const emailStatuses = {};
+                    // regrouper les items par email
+                    const emailGroups = {};
+
                     inscriptionToday.forEach(item => {
-                      if (!emailStatuses[item.email]) {
-                        emailStatuses[item.email] = new Set();
+                      if (!emailGroups[item.email]) {
+                        emailGroups[item.email] = [];
                       }
-                      emailStatuses[item.email].add(item.status);
+                      emailGroups[item.email].push(item);
                     });
 
-                    // Garder uniquement ceux qui :
-                    // 1️⃣ ont au moins un statut autorisé
-                    // 2️⃣ n’ont pas de statut 'paid'
-                    // 3️⃣ ont strictement un seul statut parmi allowedStatuses
-                    const result = Object.entries(emailStatuses)
-                      .filter(([email, statuses]) => {
-                        const statusesArray = [...statuses];
-                        return (
-                          !statusesArray.includes(excludedStatus) &&
-                          statusesArray.every(status => allowedStatuses.includes(status)) &&
-                          statusesArray.length === 1
-                        );
-                      })
-                      .map(([email]) => email);
+                    // filtrer les emails
+                    const result = Object.values(emailGroups)
+                      .filter(items =>
+                        !items.some(i => i.status === excludedStatus) &&
+                        items.some(i => allowedStatuses.includes(i.status))
+                      )
+                      .map(items => items[0].email); // garder un seul email
 
                     return result.length;
                   })()
@@ -113,33 +107,26 @@ export default function Dashboard() {
                     const allowedStatuses = ["pending", "canceled", "expired"];
                     const excludedStatus = "paid";
 
-                    // Regrouper tous les statuts par email
-                    const emailStatuses = {};
+                    // regrouper les items par email
+                    const emailGroups = {};
+
                     inscriptionToday.forEach(item => {
-                      if (!emailStatuses[item.email]) {
-                        emailStatuses[item.email] = new Set();
+                      if (!emailGroups[item.email]) {
+                        emailGroups[item.email] = [];
                       }
-                      emailStatuses[item.email].add(item.status);
+                      emailGroups[item.email].push(item);
                     });
 
-                    // Garder uniquement ceux qui :
-                    // 1️⃣ ont au moins un statut autorisé
-                    // 2️⃣ n’ont pas de statut 'paid'
-                    // 3️⃣ ont strictement un seul statut parmi allowedStatuses
-                    const result = Object.entries(emailStatuses)
-                      .filter(([email, statuses]) => {
-                        const statusesArray = [...statuses];
-                        return (
-                          !statusesArray.includes(excludedStatus) &&
-                          statusesArray.every(status => allowedStatuses.includes(status)) &&
-                          statusesArray.length === 1
-                        );
-                      })
-                      .map(([email]) => email);
+                    // filtrer les emails
+                    const result = Object.values(emailGroups)
+                      .filter(items =>
+                        !items.some(i => i.status === excludedStatus) &&
+                        items.some(i => allowedStatuses.includes(i.status))
+                      )
+                      .map(items => items[0].email); // garder un seul email
 
                     return result.length;
-                  })()
-                  + (inscriptionToday.filter((item) => item.promo === "1" && item.status == "paid")).length}</span>
+                  })() + (inscriptionToday.filter((item) => item.promo === "1" && item.status == "paid")).length}</span>
                 <h5>Total des inscriptions</h5>
               </div>
               <div className="icon">
@@ -167,29 +154,23 @@ export default function Dashboard() {
                     const allowedStatuses = ["pending", "canceled", "expired"];
                     const excludedStatus = "paid";
 
-                    // Regrouper tous les statuts par email
-                    const emailStatuses = {};
+                    // regrouper les items par email
+                    const emailGroups = {};
+
                     inscription.forEach(item => {
-                      if (!emailStatuses[item.email]) {
-                        emailStatuses[item.email] = new Set();
+                      if (!emailGroups[item.email]) {
+                        emailGroups[item.email] = [];
                       }
-                      emailStatuses[item.email].add(item.status);
+                      emailGroups[item.email].push(item);
                     });
 
-                    // Garder uniquement ceux qui :
-                    // 1️⃣ ont au moins un statut autorisé
-                    // 2️⃣ n’ont pas de statut 'paid'
-                    // 3️⃣ ont strictement un seul statut parmi allowedStatuses
-                    const result = Object.entries(emailStatuses)
-                      .filter(([email, statuses]) => {
-                        const statusesArray = [...statuses];
-                        return (
-                          !statusesArray.includes(excludedStatus) &&
-                          statusesArray.every(status => allowedStatuses.includes(status)) &&
-                          statusesArray.length === 1
-                        );
-                      })
-                      .map(([email]) => email);
+                    // filtrer les emails
+                    const result = Object.values(emailGroups)
+                      .filter(items =>
+                        !items.some(i => i.status === excludedStatus) &&
+                        items.some(i => allowedStatuses.includes(i.status))
+                      )
+                      .map(items => items[0].email); // garder un seul email
 
                     return result.length;
                   })()
@@ -216,29 +197,23 @@ export default function Dashboard() {
                     const allowedStatuses = ["pending", "canceled", "expired"];
                     const excludedStatus = "paid";
 
-                    // Regrouper tous les statuts par email
-                    const emailStatuses = {};
+                    // regrouper les items par email
+                    const emailGroups = {};
+
                     inscription.forEach(item => {
-                      if (!emailStatuses[item.email]) {
-                        emailStatuses[item.email] = new Set();
+                      if (!emailGroups[item.email]) {
+                        emailGroups[item.email] = [];
                       }
-                      emailStatuses[item.email].add(item.status);
+                      emailGroups[item.email].push(item);
                     });
 
-                    // Garder uniquement ceux qui :
-                    // 1️⃣ ont au moins un statut autorisé
-                    // 2️⃣ n’ont pas de statut 'paid'
-                    // 3️⃣ ont strictement un seul statut parmi allowedStatuses
-                    const result = Object.entries(emailStatuses)
-                      .filter(([email, statuses]) => {
-                        const statusesArray = [...statuses];
-                        return (
-                          !statusesArray.includes(excludedStatus) &&
-                          statusesArray.every(status => allowedStatuses.includes(status)) &&
-                          statusesArray.length === 1
-                        );
-                      })
-                      .map(([email]) => email);
+                    // filtrer les emails
+                    const result = Object.values(emailGroups)
+                      .filter(items =>
+                        !items.some(i => i.status === excludedStatus) &&
+                        items.some(i => allowedStatuses.includes(i.status))
+                      )
+                      .map(items => items[0].email); // garder un seul email
 
                     return result.length;
                   })()

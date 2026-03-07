@@ -387,16 +387,19 @@ form button {
 
 .cards .card {
     width: 24%;
-    min-height: 150px;
+    min-height: 170px;
     background-color: white;
     box-shadow: 0 8px 25px rgba(0, 0, 0, 0.08);
     box-sizing: border-box;
     display: flex;
-    justify-content: space-around;
-    align-items: center;
+    padding: 20px;
+    gap: 10px;
+    flex-direction: column-reverse;
     cursor: pointer;
 }
-
+.cards .card .nbr{
+    padding-left: 10px;
+}
 .cards .card .nbr span {
     font-family: "Poppins", sans-serif;
     font-weight: 400;

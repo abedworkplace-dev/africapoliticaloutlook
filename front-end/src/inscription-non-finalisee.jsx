@@ -23,26 +23,17 @@ export default function InscriptionNonFinalisee() {
 
         // Regrouper tous les statuts par email
         const emailStatuses = {};
+
         res.data.forEach(item => {
           if (!emailStatuses[item.email]) {
-            emailStatuses[item.email] = new Set();
+            emailStatuses[item.email] = [];
           }
-          emailStatuses[item.email].add(item.status);
+          emailStatuses[item.email].push(item);
         });
 
-        // Filtrer uniquement ceux qui :
-        // 1️⃣ ont un statut dans statusList
-        // 2️⃣ n’ont jamais de statut 'paid'
-        // 3️⃣ ont strictement un seul statut parmi statusList
-        const result = res.data.filter(item => {
-          const statuses = emailStatuses[item.email];
-          return (
-            statusList.includes(item.status) &&
-            !statuses.has("paid") &&
-            [...statuses].every(s => statusList.includes(s)) &&
-            statuses.size === 1
-          );
-        });
+        const result = Object.values(emailStatuses)
+          .filter(items => !items.some(i => i.status === "paid"))
+          .map(items => items[0]); // garder un seul
 
         setInscription(result);
       }).catch((err) => {

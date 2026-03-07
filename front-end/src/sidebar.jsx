@@ -38,10 +38,10 @@ export default function Sidebar() {
                         </NavLink>
                     </li>
                     <li className='dropdown'>
-                        <a href='#' className="link" onClick={() => { setOpen1(!open1) }}>
+                        <NavLink to='/sidebar/inscription' className={({ isActive }) => isActive ? "link active" : "link"} onClick={() => { setOpen1(!open1) }}>
                             <span>< FaUsers className='i' />Inscription</span>
                             <IoIosArrowDown className={open1 ? "arrow active" : "arrow"} />
-                        </a>
+                        </NavLink>
                         <div className={open1 ? "submenu active" : "submenu"}>
                             <NavLink to="/sidebar/inscription-reussie" className={({ isActive }) => isActive ? "link active" : "link"}><span>Réussie</span></NavLink>
                         </div>
