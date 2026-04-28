@@ -1,8 +1,3 @@
-import React from 'react'
-import { LuUserCheck } from "react-icons/lu";
-import { RiUserForbidLine } from "react-icons/ri";
-import { LuUserRoundCog } from "react-icons/lu";
-import { FaTicketAlt } from "react-icons/fa";
 import { useEffect } from 'react';
 import axios from "axios"
 import { useState } from 'react';
@@ -123,17 +118,17 @@ export default function Password() {
           <div className="content1">
             <div className="input">
               <div onClick={() => setShowOld(!showOld)} >{showOld ? <IoEyeOff className="i" /> : <IoEye className="i" />}</div>
-              <input type={showOld ? 'text' : 'password'} name="" id="" placeholder='ancien password' onChange={(e) => setOldPassword(e.target.value)} required />
+              <input type={showOld ? 'text' : 'password'} name="" id="" placeholder="Entrer l’ancien mot de passe" onChange={(e) => setOldPassword(e.target.value)} required />
             </div>
           </div>
           <div className="content1">
             <div className="input">
               <div onClick={() => setShowNew(!showNew)} >{showNew ? <IoEyeOff className="i" /> : <IoEye className="i" />}</div>
-              <input type={showNew ? 'text' : 'password'} name="" id="" placeholder='ancien password' onChange={(e) => setNewPassword(e.target.value)} required />
+              <input type={showNew ? 'text' : 'password'} name="" id="" placeholder="Entrer le nouveau mot de passe" onChange={(e) => setNewPassword(e.target.value)} required />
             </div>
             <div className="input">
               <div onClick={() => setShowConfirm(!showConfirm)} >{showConfirm ? <IoEyeOff className="i" /> : <IoEye className="i" />}</div>
-              <input type={showConfirm ? 'text' : 'password'} name="" id="" placeholder='ancien password' onChange={(e) => setConfirmPassword(e.target.value)} required />
+              <input type={showConfirm ? 'text' : 'password'} name="" id="" placeholder='Confirmer le nouveau mot de passe' onChange={(e) => setConfirmPassword(e.target.value)} required />
             </div>
           </div>
 

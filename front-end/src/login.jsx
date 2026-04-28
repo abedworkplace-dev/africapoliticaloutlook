@@ -6,6 +6,7 @@ import { useNavigate } from 'react-router-dom';
 import axios from "axios"
 import Swal from "sweetalert2";
 import { useEffect } from 'react';
+import { jwtDecode } from "jwt-decode";
 
 export default function Login() {
     const navigation = useNavigate()
@@ -19,6 +20,7 @@ export default function Login() {
             navigation("/sidebar/dashboard")
         }
     }, []);
+
 
     function submit(e) {
         e.preventDefault()

@@ -1,20 +1,23 @@
-import React from 'react'
-import { LuUserCheck } from "react-icons/lu";
-import { RiUserForbidLine } from "react-icons/ri";
-import { LuUserRoundCog } from "react-icons/lu";
-import { FaTicketAlt } from "react-icons/fa";
 import { useEffect } from 'react';
 import axios from "axios"
 import { useState } from 'react';
-import { SlUserFemale } from "react-icons/sl";
-import { SlUser } from "react-icons/sl";
 import { FaIdBadge } from "react-icons/fa";
+import { useOutletContext } from "react-router-dom";
 
 
 export default function Presse() {
   const [presse, setPresse] = useState([])
   const [overlay, setOverlay] = useState(false)
   const [overlayItem, setOverlayItem] = useState({})
+
+
+  const context = useOutletContext();
+  const { searchValue } = useOutletContext();
+  useEffect(() => {
+    if (context) {
+      context.searchValue = null;
+    }
+  }, [context]);
 
   useEffect(() => {
     axios.get("https://africapoliticaloutlook.vercel.app/presse")
@@ -24,6 +27,83 @@ export default function Presse() {
         console.log(err)
       })
   }, []);
+
+
+
+  function ExportPdf() {
+    const { jsPDF } = window.jspdf;
+    const pdf = new jsPDF("l", "mm", "a4");
+
+    const originalTable = document.getElementById("table");
+    if (!originalTable) return;
+
+    const tableClone = originalTable.cloneNode(true);
+
+    tableClone.querySelectorAll("*").forEach(el => el.removeAttribute("class"));
+    tableClone.removeAttribute("id");
+
+    pdf.autoTable({
+      html: tableClone,
+      headStyles: {
+        fillColor: [206, 60, 19],
+        textColor: [255, 255, 255],
+        fontStyle: "bold"
+      },
+      styles: {
+        fontSize: 8
+      }
+    });
+
+    pdf.save("Accréditation-Presse.pdf");
+  }
+
+
+
+
+  function ExportCsv() {
+    const cleanData = (data, isPhone = false) => {
+      if (!data && data !== 0) return "";
+      let value = data.toString()
+        .replace(/(\r\n|\n|\r)/g, " ")
+        .replace(/;/g, ",")
+        .trim();
+
+      if (isPhone) return `'${value}`;
+      return value;
+    };
+
+    const headers = ["ID", "Nom", "Email", "Téléphone", "Fonction", "Média", "Méssage", "Date"];
+
+    const rows = presse.map((item, key) => [
+      key + 1,
+      cleanData(item.nom),
+      cleanData(item.email),
+      cleanData(item.tel, true),
+      cleanData(item.fonction),
+      cleanData(item.media),
+      cleanData(item.message),
+      `${String(new Date(item.created_at).getDate()).padStart(2, "0")}/${String(new Date(item.created_at).getMonth() + 1).padStart(2, "0")}/${new Date(item.created_at).getFullYear()}`
+    ]);
+
+    let csvContent = [headers.join(";")];
+
+    rows.forEach(row => {
+      csvContent.push(row.map(d => `"${d}"`).join(";"));
+    });
+
+    const csvString = csvContent.join("\n");
+
+    const blob = new Blob(["\uFEFF" + csvString], {
+      type: "text/csv;charset=utf-8;"
+    });
+
+    const link = document.createElement("a");
+    link.href = URL.createObjectURL(blob);
+    link.download = "Accréditation-Presse.csv";
+    link.click();
+  }
+
+
 
 
 
@@ -37,7 +117,7 @@ export default function Presse() {
 
               <div className="user">
                 <div className="icon-sexe">
-                 < FaIdBadge className='i' />
+                  < FaIdBadge className='i' />
                 </div>
                 <div className="user-name">
                   <h3> {overlayItem.nom} </h3>
@@ -49,7 +129,7 @@ export default function Presse() {
               <div className="user-info">
                 <div><h4>Email :</h4><span>{overlayItem.email}</span></div>
                 <div><h4>Téléphone :</h4><span>{overlayItem.tel}</span></div>
-                <div><h4>Message :</h4><span>{overlayItem.message}</span></div>
+                <div className='flex-c'><h4>Message :</h4><span>{overlayItem.message}</span></div>
                 <div><h4>Date :</h4><span>
                   {new Date(overlayItem.created_at).toLocaleDateString("fr-FR", {
                     day: "2-digit",
@@ -69,9 +149,21 @@ export default function Presse() {
       }
       <div className="header">
         <h4>Accréditation presse</h4>
+        <div className="select-wrapper">
+          <select
+            className="custom-select"
+            onChange={(e) => {
+              if (e.target.value === "pdf") ExportPdf();
+              if (e.target.value === "csv") ExportCsv();
+            }}>
+            <option value="">Exporter</option>
+            <option value="pdf">PDF</option>
+            <option value="csv">CSV</option>
+          </select>
+        </div>
       </div>
       <div className="content">
-        <table>
+        <table id='table'>
           <thead>
             <tr>
               <th className='col1'>N°</th>
@@ -84,15 +176,28 @@ export default function Presse() {
           </thead>
           <tbody>
             {presse.length > 0 ? (
-              presse.map((item, key) => {
+              (
+                !searchValue
+                  ? presse
+                  : presse.filter(item =>
+                    [
+                      "nom",
+                      "email",
+                      "tel",
+                      "media"
+                    ].some(key =>
+                      item[key]?.toString().toLowerCase().includes(searchValue.toLowerCase())
+                    )
+                  )
+              ).map((item, key) => {
                 return (
                   <tr key={key} onClick={() => { setOverlay(true); setOverlayItem(presse.filter((i) => i.id === item.id)[0]) }}>
                     <td>{item.id}</td>
-                    <td className='nom'><span>{item.nom }</span></td>
+                    <td className='nom'><span>{item.nom}</span></td>
                     <td className='pays'>{item.email}</td>
-                    <td>{item.tel}</td>
-                    <td>{item.fonction}</td>
-                    <td>{item.media}</td>
+                    <td className='tel'>{item.tel}</td>
+                    <td className='fonction'>{item.fonction}</td>
+                    <td className='media'>{item.media}</td>
                   </tr>
                 )
               })

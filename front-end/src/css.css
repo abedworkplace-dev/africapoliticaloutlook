@@ -9,20 +9,6 @@ body {
     justify-content: center;
 }
 
-.menu-close {
-    display: flex;
-    justify-content: right;
-    box-sizing: border-box;
-    padding-right: 20px;
-    display: none;
-    cursor: pointer;
-}
-
-.menu-close .i {
-    color: white;
-    font-size: 25px;
-}
-
 .login .logo img {
     width: 60%;
     height: auto;
@@ -51,7 +37,7 @@ body {
 
 .login .forms {
     width: 35%;
-    height: 650px;
+    height: 90%;
     background-color: white;
     padding-top: 50px;
     box-sizing: border-box;
@@ -59,7 +45,7 @@ body {
 
 .login .forms h4 {
     font-family: "Bricolage Grotesque", sans-serif;
-    color: rgb(206, 60, 19);
+    color: #CE3C13;
     font-style: normal;
     font-weight: 400;
     font-size: 45px;
@@ -98,7 +84,7 @@ body {
 .input input {
     width: 70%;
     height: 50px;
-    border: 0.5px solid rgb(0, 0, 0, 0.6);
+    border: 0.5px solid rgb(0, 0, 0, 0.3);
     border-left: none;
     box-sizing: border-box;
     padding-left: 10px;
@@ -108,13 +94,9 @@ body {
     color: black;
 }
 
-.input input:focus {
-    border: 0.5px solid #CE3C13;
-}
-
 .input input::placeholder {
     font-size: 13px;
-    color: rgb(0, 0, 0, 1);
+    color: rgb(128, 128, 128, 0.9);
     font-family: "Poppins", sans-serif;
 }
 
@@ -160,27 +142,6 @@ form button {
     margin: auto;
 }
 
-.download {
-    width: fit-content;
-    min-width: 200px;
-    color: white;
-    font-family: "Poppins", sans-serif;
-    font-size: 16px;
-    font-style: normal;
-    font-weight: 400;
-    line-height: 20px;
-    text-transform: inherit;
-    transition: all 0.4s;
-    position: relative;
-    z-index: 1;
-    background: #CE3C13;
-    display: inline-block;
-    border-radius: 3px;
-    padding: 15px 0px;
-    border: none;
-    cursor: pointer;
-}
-
 .container {
     display: flex;
 }
@@ -192,11 +153,6 @@ form button {
     padding-top: 30px;
     box-sizing: border-box;
     transition: 0.3s;
-    margin-left: 0px;
-}
-
-.sidebar.close {
-    margin-left: -320px;
 }
 
 .sidebar .logo {
@@ -292,7 +248,6 @@ form button {
     margin-left: 35px;
 }
 
-
 .contents {
     width: 100%;
     padding-top: 25px;
@@ -381,7 +336,7 @@ form button {
 
 .header button {
     width: fit-content;
-    min-width: 200px;
+    min-width: 150px;
     color: white;
     font-family: "Poppins", sans-serif;
     font-size: 16px;
@@ -392,7 +347,7 @@ form button {
     transition: all 0.4s;
     position: relative;
     z-index: 1;
-    background: #CE3C13;
+    background: linear-gradient(to right, #f78a60 0%, #CE3C13 100%);
     display: inline-block;
     border-radius: 3px;
     padding: 15px 0px;
@@ -431,7 +386,6 @@ form button {
     display: flex;
     justify-content: space-between;
     padding-top: 20px;
-    flex-wrap: wrap;
 }
 
 .cards .card {
@@ -556,20 +510,6 @@ table td {
     padding-bottom: 15px;
 }
 
-table td a {
-    font-family: "Poppins", sans-serif;
-    color: #1A1719;
-    font-size: 14px;
-    font-style: normal;
-    font-weight: 400;
-    line-height: 20px;
-    text-align: left;
-    box-sizing: border-box;
-    padding-left: 15px;
-    padding-top: 15px;
-    padding-bottom: 15px;
-}
-
 table td.nom {
     display: flex;
     align-items: center;
@@ -591,13 +531,6 @@ table td.status span {
     padding: 4px 15px;
     border-radius: 8px;
 }
-
-table td.statustd span {
-    font-size: 11px;
-    padding: 4px 15px;
-    border-radius: 8px;
-}
-
 
 span.paid {
     background-color: #daf0e4;
@@ -958,558 +891,41 @@ tbody tr:hover {
 }
 
 
-.stats .col1 {
-    width: 5% !important;
-}
 
-.stats .col2 {
-    width: 35% !important;
-}
 
-.col3 {
-    width: 15%;
-}
 
-.col4 {
-    width: 22%;
-}
 
-.col6 {
-    width: 20%;
-}
 
-.col7 {
-    width: 13%;
-}
 
-.rapports-title {
-    margin-top: 70px;
-}
 
-.rapports-contents .cards {
-    justify-content: initial !important;
-    gap: 20px;
-}
 
-.rapports-contents .cards .card {
-    width: 32%;
-    min-height: 170px;
-    background-color: white;
-    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.08);
-    box-sizing: border-box;
-    display: flex;
-    padding: 20px;
-    gap: 10px;
-    flex-direction: column-reverse;
-    cursor: pointer;
-}
 
-.rapports-contents .cards .card .doc-name {
-    font-family: "Poppins", sans-serif;
-    font-weight: 400;
-    font-size: 12px;
-    display: block;
-    padding-top: 20px !important;
+
+
+
+
+
+@media (min-width: 1200px) {
+   
 }
 
 
-.listing {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 12px;
-    padding: 40px 0 40px;
-}
-
-.doc-stat-item {
-    width: 45%;
-    background: white;
-    border: 0.5px solid rgba(0, 0, 0, 0.1);
-    border-radius: 12px;
-    padding: 20px 18px;
-    display: flex;
-    align-items: center;
-    gap: 14px;
-    cursor: pointer;
-    box-sizing: border-box;
-    transition: border-color 0.15s, box-shadow 0.15s;
-}
-
-.doc-stat-item:hover {
-    border-color: rgba(206, 60, 19, 0.3);
-    box-shadow: 0 4px 16px rgba(206, 60, 19, 0.08);
-}
-
-.doc-stat-rank {
-    font-family: "Poppins", sans-serif;
-    font-size: 11px;
-    font-weight: 500;
-    color: rgba(0, 0, 0, 0.25);
-    min-width: 20px;
-}
-
-.doc-stat-icon {
-    width: 38px;
-    height: 38px;
-    border-radius: 8px;
-    background-color: rgba(206, 60, 19, 0.1);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-shrink: 0;
-}
-
-.doc-stat-icon .i,
-.doc-stat-icon svg {
-    font-size: 16px;
-    color: #CE3C13;
-}
-
-.doc-stat-meta {
-    flex: 1;
-    min-width: 0;
-}
-
-.doc-stat-name {
-    font-family: "Bricolage Grotesque", sans-serif;
-    font-size: 15px;
-    font-weight: 500;
-    color: #1A1719;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    margin-bottom: 8px;
-}
-
-.doc-stat-bar-row {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-}
-
-.doc-stat-bar-bg {
-    flex: 1;
-    height: 4px;
-    background-color: rgba(0, 0, 0, 0.08);
-    border-radius: 2px;
-    overflow: hidden;
-}
-
-.doc-stat-bar-fill {
-    height: 4px;
-    background-color: #CE3C13;
-    border-radius: 2px;
-    transition: width 0.5s ease;
-}
-
-.doc-stat-count {
-    font-family: "Bricolage Grotesque", sans-serif;
-    font-size: 15px;
-    font-weight: 600;
-    color: #CE3C13;
-    min-width: 28px;
-    text-align: right;
-}
-
-.doc-stat-dl {
-    font-family: "Bricolage Grotesque", sans-serif;
-    font-size: 12px;
-    color: rgba(0, 0, 0, 0.35);
-    margin-top: 3px;
+@media (min-width: 1024px) {
+   
 }
 
 
-@media (max-width: 1280px) {
-    .doc-stat-item {
-        width: calc(50% - 6px);
-    }
+@media (min-width: 992px) {
+   
+}
+@media (min-width: 768px) {
+   
 }
 
-@media (max-width: 768px) {
-    .doc-stat-item {
-        width: 100%;
-    }
+@media (min-width: 576px) {
+   
 }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-@media (max-width: 1280px) {
-    table {
-        width: initial;
-    }
-
-    .navbar .header-left .i-bars {
-        font-size: 40px;
-        cursor: pointer;
-    }
-
-    .login .forms {
-        width: 45%;
-        z-index: 100;
-    }
-
-    .sidebar {
-        position: fixed;
-        z-index: 100;
-        width: 270px;
-    }
-
-    .menu-close {
-        display: flex;
-    }
-
-    .sidebar ul {
-        padding-top: 0px;
-    }
-
-    .cards {
-        row-gap: 20px;
-    }
-
-    .cards .card {
-        width: 32%;
-        min-height: 200px;
-    }
-
-    .newsletter table {
-        width: 80%;
-    }
-
-    .overlay-card {
-        width: 80%;
-        min-height: 500px;
-    }
-
-    .outlet {
-        padding-top: 10px;
-        padding-bottom: 150px;
-    }
-
-    .navbar {
-        padding-top: 20px;
-    }
-
-    .rapports-contents .cards {
-        justify-content: space-between !important;
-        gap: 0px;
-        row-gap: 20px;
-    }
-
-    .rapports-contents .cards .card {
-        width: 32%;
-        min-height: 200px;
-    }
-
-}
-
-
-@media (max-width: 1024px) {
-    .login {
-        justify-content: center;
-        padding-left: 0px;
-    }
-
-    .login .forms {
-        width: 60%;
-    }
-
-    .cards .card {
-        width: 48%;
-    }
-
-
-    .rapports-contents .cards .card {
-        width: 48%;
-    }
-
-    .presse .col3,
-    .presse .tel {
-        display: none;
-    }
-
-    .inscription .col6,
-    .inscription .institution {
-        display: none;
-    }
-}
-
-
-@media (max-width: 992px) {
-
-    .promo form,
-    .password form {
-        width: 100%;
-    }
-
-    .promo form input,
-    .password form input {
-        width: 60%;
-    }
-}
-
-@media (max-width: 768px) {
-    .login .forms {
-        width: 70%;
-    }
-
-    .navbar .header-left .input-container {
-        display: none;
-    }
-
-    .newsletter table {
-        width: 100%;
-    }
-
-    .presse .col6,
-    .presse .fonction {
-        display: none;
-    }
-
-    .inscription .col3,
-    .inscription .pays {
-        display: none;
-    }
-
-    .promo .col1,
-    .promo .id,
-    .promo .col2,
-    .promo .label {
-        display: none;
-    }
-
-    .promo table th {
-        font-size: 12px;
-        font-style: normal;
-        font-weight: 400;
-        line-height: 20px;
-        text-align: left;
-        box-sizing: border-box;
-        padding-left: 15px;
-    }
-}
-
-@media (max-width: 576px) {
-    .sidebar {
-        width: 100%;
-    }
-
-    .cards .card {
-        padding: 30px 20px 40px 15px;
-    }
-
-    .rapports-contents .cards .card {
-        padding: 30px 20px 40px 15px;
-    }
-
-    .rapports-contents .cards .card.plus {
-        width: 100%;
-    }
-
-    .login .forms {
-        width: 100%;
-        background-color: transparent;
-        padding-top: 100px;
-    }
-
-    .promo form input,
-    .password form input {
-        width: 100%;
-    }
-
-    .sidebar.close {
-        margin-left: -500px;
-    }
-
-    .newsletter .col7 {
-        display: none;
-    }
-
-    .newsletter .date {
-        display: none;
-    }
-
-    .presse .col4,
-    .presse .pays {
-        display: none;
-    }
-
-    .overlay-card {
-        width: 80%;
-        min-height: initial;
-    }
-
-    .user .icon-sexe {
-        width: 70px;
-        height: 70px;
-    }
-
-    .user .icon-sexe .i {
-        font-size: 20px;
-    }
-
-    .user .user-name h3 {
-        font-size: 25px;
-        line-height: 25px;
-        margin-bottom: 0px;
-    }
-
-    .user .user-name span {
-        font-size: 15px;
-        line-height: 15px;
-        font-weight: 200;
-    }
-
-    .overlay .hr {
-        margin-top: 15px;
-    }
-
-    .user-info span {
-        font-size: 15px;
-    }
-
-    .user-info h4 {
-        font-size: 18px;
-    }
-
-    .user-info {
-        flex-direction: column;
-        gap: 10px;
-        margin-top: 0px;
-        margin-bottom: 30px;
-    }
-
-    .overlay-card .submit {
-        margin-top: 0px;
-    }
-
-    .user-info .flex-c {
-        display: flex;
-        flex-direction: column;
-        align-items: flex-start;
-        gap: 5px;
-    }
-
-    .cards .card .nbr h5 {
-        font-weight: 400;
-        font-size: 16px;
-        line-height: 20px;
-        margin: 0;
-    }
-
-    .promo .col1,
-    .promo .id,
-    .promo .col2,
-    .promo .label {
-        display: none;
-    }
-
-    .promo table th {
-        font-size: 12px;
-        font-style: normal;
-        font-weight: 400;
-        line-height: 20px;
-        text-align: left;
-        box-sizing: border-box;
-        padding-left: 15px;
-    }
-
-    table td.status span {
-        font-size: 10px;
-        padding: 4px 10px;
-    }
-
-    .action button {
-        min-width: 70px;
-        font-size: 8px;
-        padding: 5px 0px;
-        border: none;
-        cursor: pointer;
-    }
-
-    .inscription .col3,
-    .inscription .pays,
-    .inscription .col4,
-    .inscription .col7,
-    .inscription .email,
-    .inscription .statustd {
-        display: none;
-    }
-
-    .menu-close .i {
-        font-size: 35px;
-    }
-
-    .sidebar ul .link {
-        width: 65%;
-    }
-
-    .rapports-contents .cards .card .doc-name {
-        font-size: 18px;
-        padding: 20px 0px !important;
-        box-sizing: border-box;
-    }
-
-}
-
-@media (max-width: 375px) {}
-
-
-
-
-
-
-
-.select-wrapper {
-    position: relative;
-    display: inline-block;
-}
-
-
-
-
-.custom-select {
-    width: fit-content;
-    min-width: 150px;
-    color: white;
-    font-family: "Poppins", sans-serif;
-    font-size: 16px;
-    font-weight: 400;
-    line-height: 20px;
-    transition: all 0.4s;
-    background: #CE3C13;
-    border-radius: 3px;
-    padding: 15px 40px 15px 15px;
-    border: none;
-    cursor: pointer;
-    appearance: none;
-    -webkit-appearance: none;
-    -moz-appearance: none;
-}
-
-.custom-select:focus {
-    outline: none;
-}
-
-.select-wrapper::after {
-    content: "";
-    position: absolute;
-    right: 15px;
-    top: 50%;
-    transform: translateY(-50%);
-    width: 20px;
-    height: 20px;
-    background: url("data:image/svg+xml;utf8,<svg fill='white' viewBox='0 0 24 24' xmlns='http://www.w3.org/2000/svg'><path d='M7 10l5 5 5-5'/></svg>") no-repeat center;
-    background-size: contain;
-    pointer-events: none;
-    z-index: 2;
+@media (min-width: 375px) {
+   
 }

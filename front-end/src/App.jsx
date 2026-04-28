@@ -13,6 +13,7 @@ import Logout from './logout';
 import InscriptionPromo from './inscription-promo';
 import AjoutCodePromo from './ajouter-code-promo';
 import Presse from './presse';
+import Download from './download';
 import './App.css'
 
 function App() {
@@ -33,6 +34,7 @@ function App() {
         <Route path="newsletter" element={<Newsletter />} />
         <Route path="password" element={<Password />} />
         <Route path="logout" element={<Logout />} />
+        <Route path="download" element={<Download />} />
       </Route>
     </Routes>
   )

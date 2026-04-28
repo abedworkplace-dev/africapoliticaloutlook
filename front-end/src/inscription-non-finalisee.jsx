@@ -1,19 +1,22 @@
-import React from 'react'
-import { LuUserCheck } from "react-icons/lu";
-import { RiUserForbidLine } from "react-icons/ri";
-import { LuUserRoundCog } from "react-icons/lu";
-import { FaTicketAlt } from "react-icons/fa";
 import { useEffect } from 'react';
 import axios from "axios"
 import { useState } from 'react';
 import { SlUserFemale } from "react-icons/sl";
 import { SlUser } from "react-icons/sl";
+import { useOutletContext } from "react-router-dom";
 
 
 export default function InscriptionNonFinalisee() {
   const [inscription, setInscription] = useState([])
   const [overlay, setOverlay] = useState(false)
   const [overlayItem, setOverlayItem] = useState({})
+  const context = useOutletContext();
+  const { searchValue } = useOutletContext();
+  useEffect(() => {
+    if (context) {
+      context.searchValue = null;
+    }
+  }, [context]);
 
   useEffect(() => {
     axios.get("https://africapoliticaloutlook.vercel.app/inscription")
@@ -42,9 +45,102 @@ export default function InscriptionNonFinalisee() {
   }, []);
 
 
+  function ExportPdf() {
+    const { jsPDF } = window.jspdf;
+    const pdf = new jsPDF("l", "mm", "a4");
+
+    const originalTable = document.getElementById("table");
+    if (!originalTable) return;
+
+    const tableClone = originalTable.cloneNode(true);
+
+    tableClone.querySelectorAll("*").forEach(el => el.removeAttribute("class"));
+    tableClone.removeAttribute("id");
+
+    pdf.autoTable({
+      html: tableClone,
+      headStyles: {
+        fillColor: [206, 60, 19],
+        textColor: [255, 255, 255],
+        fontStyle: "bold"
+      },
+      styles: {
+        fontSize: 8
+      }
+    });
+
+    pdf.save("Inscriptions-Incomplètes.pdf");
+  }
+
+  function ExportCsv() {
+    const cleanData = (data, isPhone = false) => {
+      if (!data && data !== 0) return "";
+      let value = data.toString()
+        .replace(/(\r\n|\n|\r)/g, " ")
+        .replace(/;/g, ",")
+        .trim();
+
+      if (isPhone) return `'${value}`;
+      return value;
+    };
+
+    const headers = [
+      "ID", "Token", "Nom", "Prénoms", "Sexe", "Nationalité", "Pays", "Ville",
+      "Email", "Téléphone", "Code Postal", "Adresse", "Secteur", "Institution",
+      "Fonction", "Adresse Pro", "Déjà participé", "Source", "Besoins", "Promo",
+      "Code Promo", "Valeur Promo", "Accept Terms", "Status", "Payment ID",
+      "Montant", "Devise", "Pass", "Jours", "Email envoyé", "Date"
+    ];
+
+    const rows = inscription.map((item, key) => [
+      key + 1,
+      cleanData(item.token),
+      cleanData(item.nom),
+      cleanData(item.prenoms),
+      cleanData(item.sexe),
+      cleanData(item.nationalite),
+      cleanData(item.pays),
+      cleanData(item.ville),
+      cleanData(item.email),
+      cleanData(item.tel, true),
+      cleanData(item.code_postal),
+      cleanData(item.adresse),
+      cleanData(item.secteur),
+      cleanData(item.institution),
+      cleanData(item.fonction),
+      cleanData(item.adresse_pro),
+      cleanData(item.deja_participe),
+      cleanData(item.source),
+      cleanData(item.besoins),
+      cleanData(item.promo),
+      cleanData(item.promo_code),
+      cleanData(item.promo_value),
+      cleanData(item.accept_terms),
+      cleanData(item.status),
+      cleanData(item.mollie_payment_id),
+      cleanData(item.amount_value),
+      cleanData(item.currency),
+      cleanData(item.passlabel),
+      cleanData(item.days),
+      cleanData(item.email_sent),
+      `${String(new Date(item.created_at).getDate()).padStart(2, "0")}/${String(new Date(item.created_at).getMonth() + 1).padStart(2, "0")}/${new Date(item.created_at).getFullYear()}`
+    ]);
+
+    let csvContent = [headers.join(";")];
+    rows.forEach(row => csvContent.push(row.map(d => `"${d}"`).join(";")));
+
+    const blob = new Blob(["\uFEFF" + csvContent.join("\n")], {
+      type: "text/csv;charset=utf-8;"
+    });
+
+    const link = document.createElement("a");
+    link.href = URL.createObjectURL(blob);
+    link.download = "Inscriptions-Incomplètes.csv";
+    link.click();
+  }
 
   return (
-    <div className='dashboard'>
+    <div className='dashboard inscription'>
 
       {
         overlay && (
@@ -100,9 +196,21 @@ export default function InscriptionNonFinalisee() {
       }
       <div className="header">
         <h4>Inscriptions Incomplètes</h4>
+        <div className="select-wrapper">
+          <select
+            className="custom-select"
+            onChange={(e) => {
+              if (e.target.value === "pdf") ExportPdf();
+              if (e.target.value === "csv") ExportCsv();
+            }}>
+            <option value="">Exporter</option>
+            <option value="pdf">PDF</option>
+            <option value="csv">CSV</option>
+          </select>
+        </div>
       </div>
       <div className="content">
-        <table>
+        <table id='table'>
           <thead>
             <tr>
               <th className='col1'>N°</th>
@@ -114,15 +222,34 @@ export default function InscriptionNonFinalisee() {
             </tr>
           </thead>
           <tbody>
-            {inscription.map((item, key) => {
+            {(
+              !searchValue
+                ? inscription
+                : inscription.filter(item =>
+                  [
+                    "nom",
+                    "prenoms",
+                    "email",
+                    "tel",
+                    "pays",
+                    "ville",
+                    "institution",
+                    "fonction",
+                    "promo_code",
+                    "status"
+                  ].some(key =>
+                    item[key]?.toString().toLowerCase().includes(searchValue.toLowerCase())
+                  )
+                )
+            ).map((item, key) => {
               return (
                 <tr key={key} onClick={() => { setOverlay(true); setOverlayItem(inscription.filter((i) => i.id === item.id)[0]) }}>
                   <td>{key + 1}</td>
                   <td className='nom'> <div className="icon">{item.sexe === "Homme" ? <SlUser className='i' /> : <SlUserFemale className='i' />}</div><span>{item.nom + " " + item.prenoms}</span></td>
                   <td className='pays'>{item.pays}</td>
-                  <td>{item.email}</td>
-                  <td>{item.institution}</td>
-                  <td className='status'><span className={item.status == "paid" ? "paid" : item.status == "expired" ? "expired" : item.status == "pending" ? "pending" : "expired"}>{item.status}</span></td>
+                  <td className='email'>{item.email}</td>
+                  <td className='institution'>{item.institution}</td>
+                  <td className='statustd'><span className={item.status == "paid" ? "paid" : item.status == "expired" ? "expired" : item.status == "pending" ? "pending" : "expired"}>{item.status}</span></td>
                 </tr>
               )
             })}

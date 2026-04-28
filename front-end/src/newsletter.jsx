@@ -1,19 +1,20 @@
-import React from 'react'
-import { LuUserCheck } from "react-icons/lu";
-import { RiUserForbidLine } from "react-icons/ri";
-import { LuUserRoundCog } from "react-icons/lu";
-import { FaTicketAlt } from "react-icons/fa";
 import { useEffect } from 'react';
 import axios from "axios"
 import { useState } from 'react';
-import { SlUserFemale } from "react-icons/sl";
-import { SlUser } from "react-icons/sl";
-
+import { useOutletContext } from "react-router-dom";
 
 export default function Newsletter() {
   const [newsletter, setnewsletter] = useState([])
   const [overlay, setOverlay] = useState(false)
   const [overlayItem, setOverlayItem] = useState({})
+
+  const context = useOutletContext();
+  const { searchValue } = useOutletContext();
+  useEffect(() => {
+    if (context) {
+      context.searchValue = null;
+    }
+  }, [context]);
 
   useEffect(() => {
     axios.get("https://africapoliticaloutlook.vercel.app/newsletter")
@@ -26,13 +27,82 @@ export default function Newsletter() {
 
 
 
+  function ExportPdf() {
+    const { jsPDF } = window.jspdf;
+    const pdf = new jsPDF("l", "mm", "a4");
+
+    const originalTable = document.getElementById("table");
+    if (!originalTable) return;
+
+    const tableClone = originalTable.cloneNode(true);
+
+    tableClone.querySelectorAll("*").forEach(el => el.removeAttribute("class"));
+    tableClone.removeAttribute("id");
+
+    pdf.autoTable({
+      html: tableClone,
+      headStyles: {
+        fillColor: [206, 60, 19],
+        textColor: [255, 255, 255],
+        fontStyle: "bold"
+      },
+      styles: {
+        fontSize: 8
+      }
+    });
+
+    pdf.save("Newsletter.pdf");
+  }
+
+
+  function ExportCsv() {
+    const headers = ["ID", "Email", "Date"];
+
+    const rows = newsletter.map((item, key) => [
+      key + 1,
+      item.email,
+      `${String(new Date(item.date).getDate()).padStart(2, "0")}/${String(new Date(item.date).getMonth() + 1).padStart(2, "0")}/${new Date(item.date).getFullYear()}`
+    ]);
+
+    let csvContent = [headers.join(";")];
+
+    rows.forEach(row => {
+      csvContent.push(row.map(d => `"${d}"`).join(";"));
+    });
+
+    const csvString = csvContent.join("\n");
+
+    const blob = new Blob(["\uFEFF" + csvString], {
+      type: "text/csv;charset=utf-8;"
+    });
+
+    const link = document.createElement("a");
+    link.href = URL.createObjectURL(blob);
+    link.download = "Newsletter.csv";
+    link.click();
+  }
+
+
+
   return (
     <div className='dashboard newsletter'>
       <div className="header">
         <h4>Newsletter</h4>
+        <div className="select-wrapper">
+          <select
+            className="custom-select"
+            onChange={(e) => {
+              if (e.target.value === "pdf") ExportPdf();
+              if (e.target.value === "csv") ExportCsv();
+            }}>
+            <option value="">Exporter</option>
+            <option value="pdf">PDF</option>
+            <option value="csv">CSV</option>
+          </select>
+        </div>
       </div>
       <div className="content">
-        <table>
+        <table id='table'>
           <thead>
             <tr>
               <th className='col1'>N°</th>
@@ -41,12 +111,22 @@ export default function Newsletter() {
             </tr>
           </thead>
           <tbody>
-            {newsletter.map((item, key) => {
+            {(
+              !searchValue
+                ? newsletter
+                : newsletter.filter(item =>
+                  [
+                    "email"
+                  ].some(key =>
+                    item[key]?.toString().toLowerCase().includes(searchValue.toLowerCase())
+                  )
+                )
+            ).map((item, key) => {
               return (
                 <tr key={key}>
                   <td>{item.id}</td>
                   <td><a href={`mailto:${item.email}`}>{item.email}</a></td>
-                  <td>{new Date(item.date).toLocaleDateString("fr-FR", {
+                  <td className='date'>{new Date(item.date).toLocaleDateString("fr-FR", {
                     day: "2-digit",
                     month: "2-digit",
                     year: "numeric",

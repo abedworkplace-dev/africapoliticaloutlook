@@ -1,22 +1,23 @@
-import React from 'react'
-import { LuUserCheck } from "react-icons/lu";
-import { RiUserForbidLine } from "react-icons/ri";
-import { LuUserRoundCog } from "react-icons/lu";
-import { FaTicketAlt, FaPercent } from "react-icons/fa";
 import { useEffect } from 'react';
 import axios from "axios"
 import { useState } from 'react';
-import { SlUserFemale } from "react-icons/sl";
-import { SlUser } from "react-icons/sl";
-import { MdLocalOffer } from "react-icons/md";
 import Swal from "sweetalert2";
-import { FaTag } from "react-icons/fa"
 import { useNavigate } from 'react-router-dom';
+import { useOutletContext } from "react-router-dom";
 
 
 export default function CodePromo() {
   const [codes, setCodes] = useState([])
   const navigation = useNavigate()
+
+
+  const context = useOutletContext();
+  const { searchValue } = useOutletContext();
+  useEffect(() => {
+    if (context) {
+      context.searchValue = null;
+    }
+  }, [context]);
 
   useEffect(() => {
     axios.get("https://africapoliticaloutlook.vercel.app/promo")
@@ -27,6 +28,60 @@ export default function CodePromo() {
       })
   }, []);
 
+
+  function ExportPdf() {
+    const { jsPDF } = window.jspdf;
+    const pdf = new jsPDF("l", "mm", "a4");
+
+    const originalTable = document.getElementById("table");
+    if (!originalTable) return;
+
+    const tableClone = originalTable.cloneNode(true);
+
+    tableClone.querySelectorAll("*").forEach(el => el.removeAttribute("class"));
+    tableClone.removeAttribute("id");
+
+    pdf.autoTable({
+      html: tableClone,
+      headStyles: {
+        fillColor: [206, 60, 19],
+        textColor: [255, 255, 255],
+        fontStyle: "bold"
+      },
+      styles: {
+        fontSize: 10
+      }
+    });
+
+    pdf.save("Codes-Promos.pdf");
+  }
+  function ExportCsv() {
+    const headers = ["ID", "Code", "Label", "Valeur", "Active", "Date"];
+
+    const rows = codes.map((item, key) => [
+      key + 1,
+      item.code,
+      item.label,
+      item.value,
+      item.is_active,
+      `${String(new Date(item.created_at).getDate()).padStart(2, "0")}/${String(new Date(item.created_at).getMonth() + 1).padStart(2, "0")}/${new Date(item.created_at).getFullYear()}`
+    ]);
+
+    let csvContent = [headers.join(";")];
+
+    rows.forEach(row => {
+      csvContent.push(row.map(d => `"${d}"`).join(";"));
+    });
+
+    const blob = new Blob(["\uFEFF" + csvContent.join("\n")], {
+      type: "text/csv;charset=utf-8;"
+    });
+
+    const link = document.createElement("a");
+    link.href = URL.createObjectURL(blob);
+    link.download = "Codes-Promos.csv";
+    link.click();
+  }
 
 
   function activer(code) {
@@ -110,11 +165,21 @@ export default function CodePromo() {
     <div className='dashboard promo'>
       <div className="header">
         <h4>Codes promos</h4>
-        {JSON.parse(localStorage.getItem("admin#token")).role=="super-admin"?(<button onClick={()=>navigation("/sidebar/ajout-code-promo")}>Ajouter</button>):""}
-        
+        {JSON.parse(localStorage.getItem("admin#token")).role == "super-admin" ? (<button onClick={() => navigation("/sidebar/ajout-code-promo")}>Ajouter</button>) : (<div className="select-wrapper">
+          <select
+            className="custom-select"
+            onChange={(e) => {
+              if (e.target.value === "pdf") ExportPdf();
+              if (e.target.value === "csv") ExportCsv();
+            }}>
+            <option value="">Exporter</option>
+            <option value="pdf">PDF</option>
+            <option value="csv">CSV</option>
+          </select>
+        </div>)}
       </div>
       <div className="content">
-        <table>
+        <table id='table'>
           <thead>
             <tr>
               <th className='col1'>N°</th>
@@ -126,21 +191,47 @@ export default function CodePromo() {
             </tr>
           </thead>
           <tbody>
-            {codes.map((item, key) => {
+            {(
+              !searchValue
+                ? codes
+                : codes.filter(item =>
+                  [
+                    "code",
+                    "label",
+                    "value",
+                    "is_active"
+                  ].some(key =>
+                    item[key]?.toString().toLowerCase().includes(searchValue.toLowerCase())
+                  )
+                )
+            ).map((item, key) => {
               return (
                 <tr key={key} /*onClick={() => { setOverlay(true); setOverlayItem(codes.filter((i) => i.id === item.id)[0]) }}*/>
-                  <td>{item.id}</td>
+                  <td className='id'>{item.id}</td>
                   <td>{item.code}</td>
-                  <td>{item.label}</td>
+                  <td className='label'>{item.label}</td>
                   <td>{item.value + " %"}</td>
                   <td className='status'>{item.is_active == 1 ? (<span className="paid">Actif</span>) : (<span className="expired">Inactif</span>)}
                   </td>
-                   {JSON.parse(localStorage.getItem("admin#token")).role=="super-admin"?(<td className='action'>{item.is_active === 1 ? (<button className='desac' onClick={() => desactiver(item.id)}>Désativer</button>) : (<button className='activ' onClick={() => activer(item.id)}>Activer</button>)}</td>):<td className='action'></td>}
+                  {JSON.parse(localStorage.getItem("admin#token")).role == "super-admin" ? (<td className='action'>{item.is_active === 1 ? (<button className='desac' onClick={() => desactiver(item.id)}>Désativer</button>) : (<button className='activ' onClick={() => activer(item.id)}>Activer</button>)}</td>) : <td className='action'></td>}
                 </tr>
               )
             })}
           </tbody>
         </table>
+        {JSON.parse(localStorage.getItem("admin#token")).role == "super-admin" ? (<div className="header"><div className="select-wrapper">
+          <select
+            className="custom-select"
+            onChange={(e) => {
+              if (e.target.value === "pdf") ExportPdf();
+              if (e.target.value === "csv") ExportCsv();
+            }}>
+            <option value="">Exporter</option>
+            <option value="pdf">PDF</option>
+            <option value="csv">CSV</option>
+          </select>
+        </div></div>) : ""}
+        
       </div>
 
 

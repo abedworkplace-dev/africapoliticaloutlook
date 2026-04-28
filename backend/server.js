@@ -187,3 +187,22 @@ app.post("/insert-promo", (req, res) => {
             res.status(500).send("Erreur serveur");
         });
 });
+
+
+
+
+
+
+
+
+app.get("/download", (req, res) => {
+    const sql = "SELECT * FROM download_stats ORDER BY downloaded_at DESC";
+    db.query(sql)
+        .then(([rows]) => {
+            res.send(rows);
+        })
+        .catch(err => {
+            console.error("Erreur SQL :", err);
+            res.status(500).send("Erreur serveur");
+        });
+});

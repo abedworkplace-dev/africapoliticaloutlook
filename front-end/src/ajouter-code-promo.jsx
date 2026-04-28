@@ -1,14 +1,6 @@
-import React from 'react'
-import { LuUserCheck } from "react-icons/lu";
-import { RiUserForbidLine } from "react-icons/ri";
-import { LuUserRoundCog } from "react-icons/lu";
 import { FaTicketAlt, FaPercent } from "react-icons/fa";
-import { useEffect } from 'react';
 import axios from "axios"
 import { useState } from 'react';
-import { SlUserFemale } from "react-icons/sl";
-import { SlUser } from "react-icons/sl";
-import { MdLocalOffer } from "react-icons/md";
 import Swal from "sweetalert2";
 import { FaTag } from "react-icons/fa"
 import { useNavigate } from 'react-router-dom';

@@ -15,22 +15,63 @@ import { IoMdNotificationsOutline } from "react-icons/io";
 import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { FaIdBadge } from "react-icons/fa";
+import { IoCloseCircle } from "react-icons/io5";
+import { jwtDecode } from "jwt-decode";
+import { useLocation } from "react-router-dom";
+import Inscription from './inscription';
+
 
 export default function Sidebar() {
-    const navigation = useNavigate()
     const [open1, setOpen1] = useState(false)
     const [openMenu, setOpenMenu] = useState(false)
+    const location = useLocation();
+    const navigation = useNavigate()
+
+    /*
+     const decoded = jwtDecode(localStorage.getItem("admin#token"));
+    
+
+
+    const timeLeft = decoded.exp * 1000 - Date.now();
+
+    setTimeout(() => {
+        navigation("/")
+    }, timeLeft);
+    
+    */
+
     useEffect(() => {
         if (localStorage.getItem("admin#token") === null) {
             navigation("/")
         }
     }, [navigation]);
+
+    useEffect(() => {
+        if (window.innerWidth <= 1200) {
+            setOpenMenu(true);
+        }
+    }, []);
+
+    useEffect(() => {
+        if (window.innerWidth <= 1200) {
+            setOpenMenu(true);
+        }
+    }, [location.pathname]);
+
+    const [searchValue, setSearchValue] = useState("");
+
+    function handleSearch(e) {
+        setSearchValue(e.target.value);
+    }
+
+
     return (
         <div className="container">
-            <div className='sidebar' style={{ marginLeft: openMenu ? "-320px" : "0px" }}>
+            <div className={`sidebar ${openMenu ? "close" : ""}`}>
                 <div className="logo">
                     <img src="/images/logo-1.png" alt="" />
                 </div>
+                <div className="menu-close"><IoCloseCircle className='i' onClick={() => setOpenMenu(!openMenu)} /></div>
                 <ul className="menu">
                     <li>
                         <NavLink to="/sidebar/dashboard" className={({ isActive }) => isActive ? "link active" : "link"}>
@@ -38,15 +79,18 @@ export default function Sidebar() {
                         </NavLink>
                     </li>
                     <li className='dropdown'>
-                        <NavLink to='/sidebar/inscription' className={({ isActive }) => isActive ? "link active" : "link"} onClick={() => { setOpen1(!open1) }}>
-                            <span>< FaUsers className='i' />Inscription</span>
+                        <a href='#' className="link" onClick={() => { setOpen1(!open1) }}>
+                            <span>< FaUsers className='i' />Inscriptions</span>
                             <IoIosArrowDown className={open1 ? "arrow active" : "arrow"} />
-                        </NavLink>
+                        </a>
                         <div className={open1 ? "submenu active" : "submenu"}>
-                            <NavLink to="/sidebar/inscription-reussie" className={({ isActive }) => isActive ? "link active" : "link"}><span>Réussie</span></NavLink>
+                            <NavLink to="/sidebar/inscription" className={({ isActive }) => isActive ? "link active" : "link"}><span>Total</span></NavLink>
                         </div>
                         <div className={open1 ? "submenu active" : "submenu"}>
-                            <NavLink to="/sidebar/inscription-non-finalisee" className={({ isActive }) => isActive ? "link active" : "link"}><span>Non finalisée</span></NavLink>
+                            <NavLink to="/sidebar/inscription-reussie" className={({ isActive }) => isActive ? "link active" : "link"}><span>Réussies</span></NavLink>
+                        </div>
+                        <div className={open1 ? "submenu active" : "submenu"}>
+                            <NavLink to="/sidebar/inscription-non-finalisee" className={({ isActive }) => isActive ? "link active" : "link"}><span>Non finalisées</span></NavLink>
                         </div>
                         <div className={open1 ? "submenu active" : "submenu"}>
                             <NavLink to="/sidebar/inscription-promo" className={({ isActive }) => isActive ? "link active" : "link"}><span>Via code promo</span></NavLink>
@@ -59,7 +103,7 @@ export default function Sidebar() {
                     </li>
                     <li>
                         <NavLink to="/sidebar/presse" className={({ isActive }) => isActive ? "link active" : "link"}>
-                            <span><FaIdBadge className='i' />Accreditation presse</span>
+                            <span><FaIdBadge className='i' />Badge presse</span>
                         </NavLink>
                     </li>
                     <li>
@@ -85,16 +129,18 @@ export default function Sidebar() {
                         <HiBars3BottomLeft className='i-bars' onClick={() => setOpenMenu(!openMenu)} />
                         <div className="input-container">
                             <CiSearch className="i" />
-                            <input type="text" placeholder="Rechercher..." />
+                            <input type="text" placeholder="Rechercher..." value={searchValue} onChange={handleSearch} />
                         </div>
                     </div>
+                    {/*
                     <div className="header-right">
                         <div className='notif'><IoMdNotificationsOutline className='i' /><span>01</span></div>
                         {JSON.parse(localStorage.getItem("admin#token")).role == "super-admin" ? <img src="/images/djogan.jpeg" alt="" /> : <img src="/images/apo.jpeg" alt="" />}
                     </div>
+                    */}
                 </div>
                 <div className='outlet'>
-                    <Outlet />
+                    <Outlet context={{ searchValue }} />
                 </div>
             </div>
 
